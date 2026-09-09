@@ -1,0 +1,70 @@
+### 1. Получить все курсы (GET)
+GET http://localhost:3000/api/courses
+
+### 2. Получить курс по ID = 1 (GET)
+GET http://localhost:3000/api/courses/1
+
+### 3. Получить курс по ID = 2 (GET)
+GET http://localhost:3000/api/courses/2
+
+### 4. Создать новый курс (POST)
+POST http://localhost:3000/api/courses
+Content-Type: application/json
+
+{
+    "title": "TypeScript для профессионалов",
+    "description": "Углубленное изучение TypeScript",
+    "duration": "12 недель",
+    "level": "Продвинутый",
+    "price": 59.99,
+    "lessons": 36
+}
+
+### 5. Создать ещё один курс (POST)
+POST http://localhost:3000/api/courses
+Content-Type: application/json
+
+{
+    "title": "Базы данных SQL",
+    "description": "Изучение SQL и работы с базами данных",
+    "duration": "6 недель",
+    "level": "Средний",
+    "price": 29.99,
+    "lessons": 18
+}
+
+### 6. Обновить курс с ID = 1 (PUT)
+PUT http://localhost:3000/api/courses/1
+Content-Type: application/json
+
+{
+    "title": "Основы JavaScript (ОБНОВЛЕНО)",
+    "description": "Полный курс по JavaScript с практикой",
+    "duration": "8 недель",
+    "level": "Начальный",
+    "price": 0,
+    "lessons": 20,
+    "progress": 50
+}
+
+### 7. Обновить прогресс курса с ID = 1 (PATCH)
+PATCH http://localhost:3000/api/courses/1/progress
+Content-Type: application/json
+
+{
+    "progress": 75
+}
+
+### 8. Удалить курс с ID = 3 (DELETE)
+DELETE http://localhost:3000/api/courses/3
+
+### 9. Проверка ошибки 404 - несуществующий курс
+GET http://localhost:3000/api/courses/999
+
+### 10. Проверка ошибки 400 - создание курса без названия
+POST http://localhost:3000/api/courses
+Content-Type: application/json
+
+{
+    "description": "Курс без названия"
+}
