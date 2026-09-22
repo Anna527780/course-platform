@@ -1,138 +1,152 @@
-const { courses } = require("../models/courses");
-
-// Объявляем nextId прямо здесь
-let nextId = 4;
+const { Course } = require("../models");
 
 // GET /api/courses - получение всех курсов
-const getAllCourses = (req, res) => {
-  res.json(courses);
+const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.findAll();
+    res.json(courses);
+  } catch (error) {
+    res.status(500).json({
+      error: "Ошибка при получении курсов",
+      message: error.message,
+    });
+  }
 };
 
 // GET /api/courses/:id - получение курса по ID
-const getCourseById = (req, res) => {
-  const id = parseInt(req.params.id);
-  const course = courses.find((c) => c.id === id);
+const getCourseById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const course = await Course.findByPk(id);
 
-  if (!course) {
-    return res.status(404).json({
-      error: "Курс не найден",
-      message: `Курс с ID ${id} не существует`,
+    if (!course) {
+      return res.status(404).json({
+        error: "Курс не найден",
+        message: `Курс с ID ${id} не существует`,
+      });
+    }
+
+    res.json(course);
+  } catch (error) {
+    res.status(500).json({
+      error: "Ошибка при получении курса",
+      message: error.message,
     });
   }
-
-  res.json(course);
 };
 
-// POST /api/courses - добавление нового курса
-const createCourse = (req, res) => {
-  const { title, description, duration, level, price, lessons } = req.body;
+// POST /api/courses - создание нового курса
+const createCourse = async (req, res) => {
+  try {
+    const { title, description } = req.body;
 
-  // Валидация обязательных полей
-  if (!title || !description) {
-    return res.status(400).json({
-      error: "Неверные данные",
-      message: "Название и описание курса обязательны",
+    if (!title || !description) {
+      return res.status(400).json({
+        error: "Неверные данные",
+        message: "Название и описание курса обязательны",
+      });
+    }
+
+    const newCourse = await Course.create(req.body);
+    res.status(201).json(newCourse);
+  } catch (error) {
+    res.status(500).json({
+      error: "Ошибка при создании курса",
+      message: error.message,
     });
   }
-
-  const newCourse = {
-    id: nextId,
-    title,
-    description,
-    duration: duration || "Не указано",
-    level: level || "Начальный",
-    price: price || 0,
-    lessons: lessons || 0,
-    progress: 0,
-  };
-
-  // Увеличиваем nextId
-  nextId = nextId + 1;
-
-  courses.push(newCourse);
-  res.status(201).json(newCourse);
 };
 
 // PUT /api/courses/:id - полное обновление курса
-const updateCourse = (req, res) => {
-  const id = parseInt(req.params.id);
-  const courseIndex = courses.findIndex((c) => c.id === id);
+const updateCourse = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const course = await Course.findByPk(id);
 
-  if (courseIndex === -1) {
-    return res.status(404).json({
-      error: "Курс не найден",
-      message: `Курс с ID ${id} не существует`,
+    if (!course) {
+      return res.status(404).json({
+        error: "Курс не найден",
+        message: `Курс с ID ${id} не существует`,
+      });
+    }
+
+    const { title, description } = req.body;
+
+    if (!title || !description) {
+      return res.status(400).json({
+        error: "Неверные данные",
+        message: "Название и описание курса обязательны",
+      });
+    }
+
+    await Course.update(req.body, { where: { id } });
+    const updatedCourse = await Course.findByPk(id);
+    res.json(updatedCourse);
+  } catch (error) {
+    res.status(500).json({
+      error: "Ошибка при обновлении курса",
+      message: error.message,
     });
   }
-
-  const { title, description, duration, level, price, lessons, progress } =
-    req.body;
-
-  // Валидация обязательных полей
-  if (!title || !description) {
-    return res.status(400).json({
-      error: "Неверные данные",
-      message: "Название и описание курса обязательны",
-    });
-  }
-
-  // Обновляем курс
-  courses[courseIndex] = {
-    id,
-    title,
-    description,
-    duration: duration || "Не указано",
-    level: level || "Начальный",
-    price: price || 0,
-    lessons: lessons || 0,
-    progress: progress || 0,
-  };
-
-  res.json(courses[courseIndex]);
 };
 
 // DELETE /api/courses/:id - удаление курса
-const deleteCourse = (req, res) => {
-  const id = parseInt(req.params.id);
-  const courseIndex = courses.findIndex((c) => c.id === id);
+const deleteCourse = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const course = await Course.findByPk(id);
 
-  if (courseIndex === -1) {
-    return res.status(404).json({
-      error: "Курс не найден",
-      message: `Курс с ID ${id} не существует`,
+    if (!course) {
+      return res.status(404).json({
+        error: "Курс не найден",
+        message: `Курс с ID ${id} не существует`,
+      });
+    }
+
+    await Course.destroy({ where: { id } });
+    res.json({
+      message: "Курс успешно удален",
+      deletedCourse: course,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Ошибка при удалении курса",
+      message: error.message,
     });
   }
-
-  const deletedCourse = courses.splice(courseIndex, 1);
-  res.json({
-    message: "Курс успешно удален",
-    deletedCourse: deletedCourse[0],
-  });
 };
 
 // PATCH /api/courses/:id/progress - обновление прогресса
-const updateProgress = (req, res) => {
-  const id = parseInt(req.params.id);
-  const course = courses.find((c) => c.id === id);
+const updateProgress = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const course = await Course.findByPk(id);
 
-  if (!course) {
-    return res.status(404).json({
-      error: "Курс не найден",
-      message: `Курс с ID ${id} не существует`,
+    if (!course) {
+      return res.status(404).json({
+        error: "Курс не найден",
+        message: `Курс с ID ${id} не существует`,
+      });
+    }
+
+    const { progress } = req.body;
+
+    if (progress === undefined || progress < 0 || progress > 100) {
+      return res.status(400).json({
+        error: "Неверные данные",
+        message: "Прогресс должен быть числом от 0 до 100",
+      });
+    }
+
+    course.progress = progress;
+    await course.save();
+    res.json(course);
+  } catch (error) {
+    res.status(500).json({
+      error: "Ошибка при обновлении прогресса",
+      message: error.message,
     });
   }
-
-  const { progress } = req.body;
-
-  if (progress === undefined || progress < 0 || progress > 100) {
-    return res.status(400).json({
-      error: "Неверные данные",
-      message: "Прогресс должен быть числом от 0 до 100",
-    });
-  }
-
-  course.progress = progress;
-  res.json(course);
 };
 
 module.exports = {
