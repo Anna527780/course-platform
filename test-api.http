@@ -68,3 +68,91 @@ Content-Type: application/json
 {
     "description": "Курс без названия"
 }
+
+### Регистрация нового пользователя
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "123456"
+}
+### Проверка валидации
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "user2@example.com"
+}
+
+### Вход пользователя
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "123456"
+}
+
+### Проверка ошибок(неверный пароль)
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "wrong"
+}
+
+### Вход
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "123456"
+}
+
+### Профиль с токеном
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer {{login.response.body.token}}
+
+### Профиль без токена (401)
+GET http://localhost:3000/api/auth/profile
+
+### Вход (получить токен админа)
+# @name loginAdmin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "123456"
+}
+
+### Удалить курс (админ)
+DELETE http://localhost:3000/api/courses/2
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+### Регистрация обычного пользователя
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "123456"
+}
+
+### Вход обычного пользователя
+# @name loginUser
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "123456"
+}
+
+### Удалить курс (обычный пользователь — должен быть 403)
+DELETE http://localhost:3000/api/courses/1
+Authorization: Bearer {{loginUser.response.body.token}}

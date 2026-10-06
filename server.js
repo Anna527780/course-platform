@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 
@@ -6,7 +8,6 @@ app.use(express.json());
 const courseRoutes = require("./routes/courses");
 app.use("/api/courses", courseRoutes);
 
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -14,6 +15,9 @@ app.use((err, req, res, next) => {
     message: err.message,
   });
 });
+
+const authRoutes = require("./routes/auth");
+app.use("/api/auth", authRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {

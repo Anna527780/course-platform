@@ -1,6 +1,6 @@
+
 const { Course } = require("../models");
 
-// GET /api/courses - получение всех курсов
 const getAllCourses = async (req, res) => {
   try {
     const courses = await Course.findAll();
@@ -13,7 +13,6 @@ const getAllCourses = async (req, res) => {
   }
 };
 
-// GET /api/courses/:id - получение курса по ID
 const getCourseById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -35,7 +34,6 @@ const getCourseById = async (req, res) => {
   }
 };
 
-// POST /api/courses - создание нового курса
 const createCourse = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -57,7 +55,6 @@ const createCourse = async (req, res) => {
   }
 };
 
-// PUT /api/courses/:id - полное обновление курса
 const updateCourse = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -90,7 +87,6 @@ const updateCourse = async (req, res) => {
   }
 };
 
-// DELETE /api/courses/:id - удаление курса
 const deleteCourse = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -116,7 +112,6 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-// PATCH /api/courses/:id/progress - обновление прогресса
 const updateProgress = async (req, res) => {
   try {
     const id = parseInt(req.params.id);

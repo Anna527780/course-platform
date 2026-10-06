@@ -1,18 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const courseController = require("../controllers/courseController");
+const { authenticateToken, isAdmin } = require("../middleware/auth");
 
-router.get("/", courseController.getAllCourses);
+// Все маршруты требуют аутентификации
+router.get("/", authenticateToken, courseController.getAllCourses);
+router.get("/:id", authenticateToken, courseController.getCourseById);
+router.post("/", authenticateToken, courseController.createCourse);
+router.put("/:id", authenticateToken, courseController.updateCourse);
 
-router.get("/:id", courseController.getCourseById);
+// Удаление — только для администратора
+router.delete(
+  "/:id",
+  authenticateToken,
+  isAdmin,
+  courseController.deleteCourse,
+);
 
-router.post("/", courseController.createCourse);
-
-router.put("/:id", courseController.updateCourse);
-
-
-router.delete("/:id", courseController.deleteCourse);
-
-router.patch("/:id/progress", courseController.updateProgress);
+router.patch(
+  "/:id/progress",
+  authenticateToken,
+  courseController.updateProgress,
+);
 
 module.exports = router;
