@@ -1,0 +1,331 @@
+/* ДОБАВЛЕНО: Светло-лиловый фон для всей страницы */
+body {
+  background-color: #f8f6fc; 
+  margin: 0;
+  padding: 0;
+}
+
+/* ДОБАВЛЕНО: Белая центральная область */
+.main-wrapper {
+  background-color: #ffffff;
+  max-width: 1200px;
+  margin: 40px auto;
+  border-radius: 24px; /* Скругленные углы для красоты */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); /* Легкая тень */
+  overflow: hidden;
+}
+
+/* Основной контейнер (внутри белого блока) */
+.page-container {
+  padding: 40px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1f2937;
+}
+
+/* Фильтры-категории */
+.categories-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.category-pill {
+  padding: 10px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 30px;
+  background: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.category-pill:hover {
+  background: #f9fafb;
+}
+
+.category-pill.active {
+  background: #8B5CF6;
+  color: white;
+  border-color: #8B5CF6;
+}
+
+/* Поиск */
+.search-section {
+  position: relative;
+  max-width: 400px;
+  margin-bottom: 40px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 20px;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  background-color: #e5e7eb;
+}
+
+/* Шапка списка */
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.list-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-primary {
+  background-color: #8B5CF6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #7c3aed;
+}
+
+/* Сетка карточек */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* Карточка */
+.course-card {
+  background: #f9fafb;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Квадратная картинка */
+.card-image {
+  height: 200px;
+  width: 100%;
+  position: relative;
+}
+
+.placeholder-1 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+.placeholder-2 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+.placeholder-3 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+
+.card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.card-tags {
+  margin-bottom: 15px;
+}
+
+.tag {
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.card-meta {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.card-price {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.btn-delete-icon {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-delete-icon:hover {
+  color: #ef4444;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  grid-column: 1 / -1;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+/* --- МОДАЛЬНОЕ ОКНО --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-hint {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.modal-actions {
+  margin-top: 30px;
+}
+
+.btn-primary {
+  padding: 14px 28px;
+}
+
+/* --- Блок статистики --- */
+.stats-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #f9fafb;
+  padding: 15px 25px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f3f4f6;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #8B5CF6; /* Фиолетовый акцент */
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
